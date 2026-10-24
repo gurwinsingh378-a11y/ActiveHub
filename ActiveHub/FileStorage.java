@@ -9,16 +9,13 @@ import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.ArrayList;
 
-/**
- * Handles basic text-file storage for the ActiveHub system.
- */
 public class FileStorage {
 
     private static final String DATA_FOLDER = "data";
 
     /**
-     * Creates the data folder if it does not exist.
-     */
+     * Creates the data folder if it does not 
+     **/
     public static void createDataFolder() {
         File folder = new File(DATA_FOLDER);
 
@@ -77,7 +74,6 @@ public static void saveBooking(Booking booking) {
 
     appendRecord("bookings.txt", record);
 }
-
 
 public static void updateSavedBookings(ArrayList<Booking> bookings) {
     createDataFolder();
@@ -188,7 +184,6 @@ public static void loadBookings(
     }
 }
 
-
 public static void saveTransaction(RentalTransaction transaction) {
 
     String transactionRecord =
@@ -209,7 +204,6 @@ public static void saveTransaction(RentalTransaction transaction) {
         appendRecord("rental_lines.txt", itemRecord);
     }
 }
-
 
 public static void loadTransactions(
         ArrayList<RentalTransaction> transactions,
@@ -303,7 +297,6 @@ public static void loadTransactions(
     }
 }
 
-
 public static void savePayment(Payment payment) {
 
     String record;
@@ -340,7 +333,6 @@ public static void savePayment(Payment payment) {
 
     appendRecord("payments.txt", record);
 }
-
 
 public static void loadPayments(ArrayList<Payment> payments) {
     File file = new File("data/payments.txt");
@@ -414,6 +406,4 @@ public static void loadPayments(ArrayList<Payment> payments) {
     }
 }
 
-
 }
-
