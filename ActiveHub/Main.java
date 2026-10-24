@@ -7,29 +7,17 @@ import java.time.format.DateTimeParseException;
 
 public class Main {
 
-    // Stores all bookings created during the program.
 static ArrayList<Booking> bookings = new ArrayList<>();
-
-// Stores the available sports facilities.
 static ArrayList<Facility> facilities = new ArrayList<>();
-
-// Stores all rental transactions created by the system.
 static ArrayList<RentalTransaction> transactions = new ArrayList<>();
-
-// Stores the rental catalogue items.
 static ArrayList<RentalItem> rentalCatalogue = new ArrayList<>();
-
-// Manages all promotions available at ActiveHub.
 static PromotionManager promotionManager = new PromotionManager();
-
-// Stores all successful payments made by customers.
 static ArrayList<Payment> payments = new ArrayList<>();
 
     public static void main(String[] args) {
 
         Scanner scanner = new Scanner(System.in);
 
-        // Load the available facilities when the program starts.
         initializeFacilities();
 initializeRentalCatalogue();
 
@@ -50,7 +38,6 @@ FileStorage.loadPayments(payments);
 
             System.out.print("Enter your choice: ");
 
-            // Validate that the user enters a number
             while (!scanner.hasNextInt()) {
                 System.out.println("Invalid input. Please enter a number from 1 to 7.");
                 System.out.print("Enter your choice: ");
@@ -58,7 +45,7 @@ FileStorage.loadPayments(payments);
             }
 
             choice = scanner.nextInt();
-            scanner.nextLine(); // Clear the newline
+            scanner.nextLine();
 
             switch (choice) {
 
@@ -99,13 +86,10 @@ FileStorage.loadPayments(payments);
         scanner.close();
     }
 
-    // Creates the sports facilities available at ActiveHub.
 public static void initializeFacilities() {
 
-    // Clear the list first to avoid duplicate facilities.
     facilities.clear();
 
-    // Add Badminton Court.
     facilities.add(
         new Facility(
             "F001",
@@ -115,7 +99,6 @@ public static void initializeFacilities() {
         )
     );
 
-    // Add Basketball Court.
     facilities.add(
         new Facility(
             "F002",
@@ -125,7 +108,6 @@ public static void initializeFacilities() {
         )
     );
 
-    // Add Tennis Court.
     facilities.add(
         new Facility(
             "F003",
@@ -136,12 +118,10 @@ public static void initializeFacilities() {
     );
 }
 
-    // Creates the 8 rental items required by the assignment.
 public static void initializeRentalCatalogue() {
 
     rentalCatalogue.clear();
 
-    // 4 Equipment items
     rentalCatalogue.add(
         new Equipment("E001", "Badminton Racket",
                 "Equipment", 10.00, "Yonex")
@@ -162,7 +142,6 @@ public static void initializeRentalCatalogue() {
                 "Equipment", 15.00, "Molten")
     );
 
-    // 2 Facility/Court packages
     rentalCatalogue.add(
         new FacilityPackage("F001", "Badminton Court Package",
                 "Facility", 30.00, 1)
@@ -173,7 +152,6 @@ public static void initializeRentalCatalogue() {
                 "Facility", 40.00, 1)
     );
 
-    // 2 Accessories/Add-on services
     rentalCatalogue.add(
         new Accessory("A001", "Shuttlecock Set",
                 "Accessory", 5.00, "Pack of shuttlecocks")
@@ -184,10 +162,6 @@ public static void initializeRentalCatalogue() {
                 "Accessory", 3.00, "Sports centre towel")
     );
 }
-
-    // ==============================
-    // MAIN MENU
-    // ==============================
 
     public static void displayMenu() {
 
@@ -205,11 +179,6 @@ public static void initializeRentalCatalogue() {
         System.out.println("========================================");
     }
 
-    // ==============================
-    // MODULE 1
-    // ==============================
-
-    // Handles all facility booking functions.
 public static void facilityBookingModule(Scanner scanner) {
 
     int choice;
@@ -225,7 +194,6 @@ public static void facilityBookingModule(Scanner scanner) {
         System.out.println("3. Cancel Booking");
         System.out.println("4. Back to Main Menu");
         System.out.println("========================================");
-
         System.out.print("Enter your choice: ");
 
         while (!scanner.hasNextInt()) {
@@ -261,26 +229,22 @@ public static void facilityBookingModule(Scanner scanner) {
 
     } while (choice != 4);
 }
-
-// Creates a new facility booking.
+    
 public static void createBooking(Scanner scanner) {
 
     System.out.println();
     System.out.println("===== CREATE BOOKING =====");
 
-    // Generate a booking ID.
     String bookingId = String.format(
         "B%03d",
         bookings.size() + 1
     );
 
-    // Generate a customer ID.
     String customerId = String.format(
         "C%03d",
         bookings.size() + 1
     );
 
-    // Get customer information.
     System.out.print("Enter Customer Name: ");
     String name = scanner.nextLine();
 
@@ -290,7 +254,6 @@ public static void createBooking(Scanner scanner) {
     System.out.print("Enter Customer Type: ");
     String customerType = scanner.nextLine();
 
-    // Create the customer object.
     Customer customer = new Customer(
         customerId,
         name,
@@ -298,27 +261,22 @@ public static void createBooking(Scanner scanner) {
         customerType
     );
 
-    // Display available facilities.
     System.out.println("\nAvailable Facilities:");
 
     for (Facility facility : facilities) {
         System.out.println(facility.getDetails());
     }
 
-    // Ask the user to select a facility.
     System.out.print("\nEnter Facility ID: ");
     String facilityId = scanner.nextLine();
 
-    // Find the selected facility.
     Facility selectedFacility = findFacility(facilityId);
 
-    // Check whether the facility exists.
     if (selectedFacility == null) {
         System.out.println("Facility not found.");
         return;
     }
 
-    // Ask for booking date.
     System.out.print("Enter Booking Date (YYYY-MM-DD): ");
     String dateInput = scanner.nextLine();
 
@@ -333,7 +291,6 @@ public static void createBooking(Scanner scanner) {
         return;
     }
 
-    // Ask for booking time.
     System.out.print("Enter Booking Time (HH:MM): ");
     String timeInput = scanner.nextLine();
 
@@ -348,7 +305,6 @@ public static void createBooking(Scanner scanner) {
         return;
     }
 
-    // Ask for number of participants.
     System.out.print("Enter Number of Participants: ");
 
     while (!scanner.hasNextInt()) {
@@ -362,15 +318,13 @@ public static void createBooking(Scanner scanner) {
     int participants = scanner.nextInt();
     scanner.nextLine();
 
-    // Participants must be greater than zero.
     if (participants <= 0) {
         System.out.println(
             "Number of participants must be greater than 0."
         );
         return;
     }
-
-    // Create the booking object.
+    
     Booking newBooking = new Booking(
         bookingId,
         customer,
@@ -380,7 +334,6 @@ public static void createBooking(Scanner scanner) {
         participants
     );
 
-    // Check for duplicate booking.
     for (Booking existingBooking : bookings) {
 
         if (newBooking.conflictsWith(existingBooking)) {
@@ -398,10 +351,8 @@ public static void createBooking(Scanner scanner) {
         }
     }
 
-    // Add the booking to the list.
 bookings.add(newBooking);
 
-// Save the booking to a text file.
 FileStorage.saveBooking(newBooking);
 
     System.out.println(
@@ -417,21 +368,18 @@ FileStorage.saveBooking(newBooking);
     );
 }
 
-// Creates a new rental transaction.
 public static void createRentalTransaction(Scanner scanner) {
 
     System.out.println("\n========================================");
     System.out.println("       CREATE RENTAL TRANSACTION");
     System.out.println("========================================");
 
-    // Check whether there are any bookings.
     if (bookings.isEmpty()) {
         System.out.println("No bookings available.");
         System.out.println("Please create a facility booking first.");
         return;
     }
 
-    // Display confirmed bookings.
     System.out.println("\nAvailable Bookings:");
 
     for (Booking booking : bookings) {
@@ -452,13 +400,11 @@ public static void createRentalTransaction(Scanner scanner) {
         }
     }
 
-    // Ask the user to select a booking.
     System.out.print("\nEnter Booking ID: ");
     String bookingId = scanner.nextLine();
 
     Booking selectedBooking = null;
 
-    // Find the selected booking.
     for (Booking booking : bookings) {
 
         if (booking.getBookingId().equalsIgnoreCase(bookingId)
@@ -469,18 +415,15 @@ public static void createRentalTransaction(Scanner scanner) {
         }
     }
 
-    // Stop if the booking does not exist.
     if (selectedBooking == null) {
         System.out.println("Booking not found.");
         return;
     }
 
-    // Generate a transaction ID.
     String transactionId = String.format(
         "T%03d", transactions.size() + 1
     );
 
-    // Create the transaction.
     RentalTransaction transaction =
         new RentalTransaction(
             transactionId,
@@ -489,7 +432,6 @@ public static void createRentalTransaction(Scanner scanner) {
             selectedBooking
         );
 
-    // Allow the user to add multiple items.
     String continueAdding = "Y";
 
     while (continueAdding.equalsIgnoreCase("Y")) {
@@ -503,7 +445,6 @@ public static void createRentalTransaction(Scanner scanner) {
         System.out.print("\nEnter Item Code: ");
         String itemCode = scanner.nextLine();
 
-        // Find the selected item.
         RentalItem selectedItem = findRentalItem(itemCode);
 
         if (selectedItem == null) {
@@ -540,28 +481,22 @@ public static void createRentalTransaction(Scanner scanner) {
         continueAdding = scanner.nextLine();
     }
 
-    // Make sure at least one item was added.
     if (transaction.getRentalLines().isEmpty()) {
         System.out.println("\nNo items were added.");
         return;
     }
 
-    // Calculate the transaction amount.
     transaction.calculateTotal();
 
-    // Add transaction to the system.
     transactions.add(transaction);
     
-    // Save the transaction and its rental items.
 FileStorage.saveTransaction(transaction);
 
-    // Display the transaction.
     transaction.displayTransactionSummary();
 
     System.out.println("\nRental transaction created successfully!");
 }
 
-// Finds a rental item using its item code.
 public static RentalItem findRentalItem(String itemCode) {
 
     for (RentalItem item : rentalCatalogue) {
@@ -574,7 +509,6 @@ public static RentalItem findRentalItem(String itemCode) {
     return null;
 }
 
-// Searches for a facility using its ID.
 public static Facility findFacility(String facilityId) {
 
     for (Facility facility : facilities) {
@@ -588,13 +522,11 @@ public static Facility findFacility(String facilityId) {
     return null;
 }
 
-// Displays all bookings stored in the system.
 public static void viewBookings() {
 
     System.out.println();
     System.out.println("===== ALL BOOKINGS =====");
 
-    // Check whether there are any bookings.
     if (bookings.isEmpty()) {
 
         System.out.println("No bookings found.");
@@ -608,8 +540,7 @@ public static void viewBookings() {
         );
     }
 }
-
-// Cancels an existing booking.
+    
 public static void cancelBooking(Scanner scanner) {
 
     System.out.println();
@@ -628,7 +559,6 @@ public static void cancelBooking(Scanner scanner) {
 
         if (booking.getBookingId().equalsIgnoreCase(bookingId)) {
 
-            // Check whether the booking is already cancelled.
             if (booking.getStatus().equals("CANCELLED")) {
 
                 System.out.println(
@@ -653,15 +583,10 @@ public static void cancelBooking(Scanner scanner) {
     System.out.println("Booking ID not found.");
 }
 
-    // ==============================
-    // MODULE 2
-    // ==============================
-
     public static void viewRentalCatalogue() {
 
     ArrayList<RentalItem> catalogue = new ArrayList<>();
 
-    // 4 Equipment items
     catalogue.add(new Equipment(
             "E001", "Badminton Racket",
             "Equipment", 10.00, "Yonex"));
@@ -678,7 +603,6 @@ public static void cancelBooking(Scanner scanner) {
             "E004", "Basketball",
             "Equipment", 15.00, "Molten"));
 
-    // 2 Facility/Court packages
     catalogue.add(new FacilityPackage(
             "F001", "Badminton Court Package",
             "Facility", 30.00, 1));
@@ -687,7 +611,6 @@ public static void cancelBooking(Scanner scanner) {
             "F002", "Basketball Court Package",
             "Facility", 40.00, 1));
 
-    // 2 Accessories/Add-on services
     catalogue.add(new Accessory(
             "A001", "Shuttlecock Set",
             "Accessory", 5.00, "Standard shuttlecock set"));
@@ -716,23 +639,16 @@ public static void cancelBooking(Scanner scanner) {
     System.out.println();
 }
 
-    // ==============================
-    // MODULE 4
-    // ==============================
-
-    // Handles the promotion module.
     static void applyPromotion(Scanner scanner) {
 
     System.out.println("\n===== APPLY PROMOTION =====");
 
-    // Check whether there are any transactions.
     if (transactions.isEmpty()) {
         System.out.println("No rental transactions available.");
         pause(scanner);
         return;
     }
-
-    // Display all existing transactions.
+        
     System.out.println("\nAvailable Transactions:");
 
     for (RentalTransaction transaction : transactions) {
@@ -743,14 +659,11 @@ public static void cancelBooking(Scanner scanner) {
         );
     }
 
-    // Ask the user which transaction should receive
-    // the promotion.
     System.out.print("\nEnter Transaction ID: ");
     String transactionId = scanner.nextLine().trim();
 
     RentalTransaction selectedTransaction = null;
 
-    // Search for the transaction.
     for (RentalTransaction transaction : transactions) {
 
         if (transaction.getTransactionId()
@@ -761,47 +674,35 @@ public static void cancelBooking(Scanner scanner) {
         }
     }
 
-    // Check whether the transaction exists.
     if (selectedTransaction == null) {
         System.out.println("Transaction not found.");
         pause(scanner);
         return;
     }
 
-    // Display all promotions that are eligible.
     promotionManager.displayEligiblePromotions(
         selectedTransaction
-    );
-
-    // Automatically select the promotion
-    // with the greatest saving.
+    ); 
+        
     promotionManager.applyBestPromotion(
         selectedTransaction
     );
 
-    // Display the updated transaction.
     selectedTransaction.displayTransactionSummary();
 
     pause(scanner);
 }
 
-    // ==============================
-    // MODULE 5
-    // ==============================
-
-    // Handles the payment module.
 static void makePayment(Scanner scanner) {
 
     System.out.println("\n===== MAKE PAYMENT =====");
 
-    // Check whether there are any transactions.
     if (transactions.isEmpty()) {
         System.out.println("No rental transactions available.");
         pause(scanner);
         return;
     }
 
-    // Display available transactions.
     System.out.println("\nAvailable Transactions:");
 
     for (RentalTransaction transaction : transactions) {
@@ -816,13 +717,11 @@ static void makePayment(Scanner scanner) {
         );
     }
 
-    // Ask the user to select a transaction.
     System.out.print("\nEnter Transaction ID: ");
     String transactionId = scanner.nextLine().trim();
 
     RentalTransaction selectedTransaction = null;
-
-    // Search for the selected transaction.
+    
     for (RentalTransaction transaction : transactions) {
 
         if (transaction.getTransactionId()
@@ -833,14 +732,12 @@ static void makePayment(Scanner scanner) {
         }
     }
 
-    // Check whether the transaction exists.
     if (selectedTransaction == null) {
         System.out.println("Transaction not found.");
         pause(scanner);
         return;
     }
 
-    // Check whether this transaction has already been paid.
 int transactionIndex = transactions.indexOf(selectedTransaction);
 
 String existingPaymentId =
@@ -860,7 +757,6 @@ for (Payment existingPayment : payments) {
     }
 }
 
-    // Automatically apply the best eligible promotion.
 promotionManager.applyBestPromotion(selectedTransaction);
 
     double amount =
@@ -869,7 +765,6 @@ promotionManager.applyBestPromotion(selectedTransaction);
     System.out.println("\nAmount to Pay: RM"
             + String.format("%.2f", amount));
 
-    // Display payment methods.
     System.out.println("\n===== PAYMENT METHOD =====");
     System.out.println("1. Cash");
     System.out.println("2. Credit/Debit Card");
@@ -879,22 +774,16 @@ promotionManager.applyBestPromotion(selectedTransaction);
 
     String methodChoice = scanner.nextLine().trim();
 
-    // Generate a simple payment ID.
     String paymentId =
             "P" + String.format("%03d", transactions.indexOf(
                     selectedTransaction) + 1);
 
     Payment payment = null;
 
-    // Store the successful payment.
 payments.add(payment);
 
-// Save the successful payment to a text file.
 FileStorage.savePayment(payment);
 
-    // -------------------------
-    // CASH PAYMENT
-    // -------------------------
     if (methodChoice.equals("1")) {
 
         System.out.print("Enter cash received: RM");
@@ -911,7 +800,6 @@ FileStorage.savePayment(payment);
             return;
         }
 
-        // Check whether enough cash was received.
         if (receivedAmount < amount) {
 
             System.out.println(
@@ -929,9 +817,6 @@ FileStorage.savePayment(payment);
         );
     }
 
-    // -------------------------
-    // CARD PAYMENT
-    // -------------------------
     else if (methodChoice.equals("2")) {
 
         System.out.print(
@@ -954,9 +839,6 @@ FileStorage.savePayment(payment);
         );
     }
 
-    // -------------------------
-    // E-WALLET PAYMENT
-    // -------------------------
     else if (methodChoice.equals("3")) {
 
         System.out.print(
@@ -979,7 +861,6 @@ FileStorage.savePayment(payment);
         );
     }
 
-    // Invalid payment method.
     else {
 
         System.out.println("Invalid payment method.");
@@ -987,10 +868,8 @@ FileStorage.savePayment(payment);
         return;
     }
 
-    // Store the successful payment.
 payments.add(payment);
 
-// Display the completed payment.
 System.out.println("\nPayment successful!");
 
 payment.displayPayment();
@@ -998,38 +877,26 @@ payment.displayPayment();
 pause(scanner);
 }
 
-    // ==============================
-    // MODULE 6
-    // ==============================
-
-    // Handles the daily report module.
 public static void dailyReport() {
 
-    // Create a report for today's date.
     DailyReport report =
             new DailyReport(LocalDate.now());
 
-    // Generate the report using the stored
-    // bookings and rental transactions.
     report.generateReport(
             bookings,
             transactions
     );
 
-    // Display the main report information.
     report.displayReport();
 
-    // Display payment method summary.
     System.out.println("\n===== PAYMENT METHOD SUMMARY =====");
 
-    // Count each type of successful payment.
     int cashCount = 0;
     int cardCount = 0;
     int eWalletCount = 0;
 
     for (Payment payment : payments) {
 
-        // Check the actual payment object type.
         if (payment instanceof CashPayment) {
 
             cashCount++;
@@ -1047,13 +914,8 @@ public static void dailyReport() {
     System.out.println("Cash Payments       : " + cashCount);
     System.out.println("Card Payments       : " + cardCount);
     System.out.println("E-Wallet Payments   : " + eWalletCount);
-
     System.out.println("========================================");
 }
-
-    // ==============================
-    // PAUSE
-    // ==============================
 
     public static void pause(Scanner scanner) {
 
