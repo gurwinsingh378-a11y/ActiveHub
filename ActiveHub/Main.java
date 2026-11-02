@@ -6,7 +6,6 @@ import java.time.LocalTime;
 import java.time.format.DateTimeParseException;
 
 public class Main {
-
 static ArrayList<Booking> bookings = new ArrayList<>();
 static ArrayList<Facility> facilities = new ArrayList<>();
 static ArrayList<RentalTransaction> transactions = new ArrayList<>();
@@ -15,8 +14,7 @@ static PromotionManager promotionManager = new PromotionManager();
 static ArrayList<Payment> payments = new ArrayList<>();
 
     public static void main(String[] args) {
-
-        Scanner scanner = new Scanner(System.in);
+    Scanner scanner = new Scanner(System.in);
 
         initializeFacilities();
 initializeRentalCatalogue();
@@ -30,14 +28,11 @@ FileStorage.loadTransactions(
 );
 
 FileStorage.loadPayments(payments);
-
         int choice;
-
         do {
             displayMenu();
 
             System.out.print("Enter your choice: ");
-
             while (!scanner.hasNextInt()) {
                 System.out.println("Invalid input. Please enter a number from 1 to 7.");
                 System.out.print("Enter your choice: ");
@@ -45,7 +40,7 @@ FileStorage.loadPayments(payments);
             }
 
             choice = scanner.nextInt();
-            scanner.nextLine();
+            scanner.nextLine(); 
 
             switch (choice) {
 
@@ -82,13 +77,11 @@ FileStorage.loadPayments(payments);
             }
 
         } while (choice != 7);
-
         scanner.close();
     }
 
 public static void initializeFacilities() {
-
-    facilities.clear();
+facilities.clear();
 
     facilities.add(
         new Facility(
@@ -98,7 +91,6 @@ public static void initializeFacilities() {
             30.00
         )
     );
-
     facilities.add(
         new Facility(
             "F002",
@@ -107,7 +99,6 @@ public static void initializeFacilities() {
             40.00
         )
     );
-
     facilities.add(
         new Facility(
             "F003",
@@ -119,7 +110,6 @@ public static void initializeFacilities() {
 }
 
 public static void initializeRentalCatalogue() {
-
     rentalCatalogue.clear();
 
     rentalCatalogue.add(
@@ -164,7 +154,6 @@ public static void initializeRentalCatalogue() {
 }
 
     public static void displayMenu() {
-
         System.out.println();
         System.out.println("========================================");
         System.out.println("       ACTIVEHUB SPORTS CENTRE");
@@ -180,11 +169,9 @@ public static void initializeRentalCatalogue() {
     }
 
 public static void facilityBookingModule(Scanner scanner) {
-
-    int choice;
+      int choice;
 
     do {
-
         System.out.println();
         System.out.println("========================================");
         System.out.println("       FACILITY BOOKING MODULE");
@@ -201,7 +188,7 @@ public static void facilityBookingModule(Scanner scanner) {
             System.out.print("Enter your choice: ");
             scanner.next();
         }
-
+        
         choice = scanner.nextInt();
         scanner.nextLine();
 
@@ -229,7 +216,7 @@ public static void facilityBookingModule(Scanner scanner) {
 
     } while (choice != 4);
 }
-    
+
 public static void createBooking(Scanner scanner) {
 
     System.out.println();
@@ -279,7 +266,6 @@ public static void createBooking(Scanner scanner) {
 
     System.out.print("Enter Booking Date (YYYY-MM-DD): ");
     String dateInput = scanner.nextLine();
-
     LocalDate bookingDate;
 
     try {
@@ -293,7 +279,6 @@ public static void createBooking(Scanner scanner) {
 
     System.out.print("Enter Booking Time (HH:MM): ");
     String timeInput = scanner.nextLine();
-
     LocalTime bookingTime;
 
     try {
@@ -324,7 +309,7 @@ public static void createBooking(Scanner scanner) {
         );
         return;
     }
-    
+
     Booking newBooking = new Booking(
         bookingId,
         customer,
@@ -335,8 +320,7 @@ public static void createBooking(Scanner scanner) {
     );
 
     for (Booking existingBooking : bookings) {
-
-        if (newBooking.conflictsWith(existingBooking)) {
+            if (newBooking.conflictsWith(existingBooking)) {
 
             System.out.println(
                 "\nBooking failed!"
@@ -404,7 +388,6 @@ public static void createRentalTransaction(Scanner scanner) {
     String bookingId = scanner.nextLine();
 
     Booking selectedBooking = null;
-
     for (Booking booking : bookings) {
 
         if (booking.getBookingId().equalsIgnoreCase(bookingId)
@@ -433,18 +416,15 @@ public static void createRentalTransaction(Scanner scanner) {
         );
 
     String continueAdding = "Y";
-
     while (continueAdding.equalsIgnoreCase("Y")) {
 
         System.out.println("\n===== RENTAL CATALOGUE =====");
-
         for (RentalItem item : rentalCatalogue) {
             System.out.println(item.getDetails());
         }
 
         System.out.print("\nEnter Item Code: ");
-        String itemCode = scanner.nextLine();
-
+        String itemCode = scanner.nextLine().trim();
         RentalItem selectedItem = findRentalItem(itemCode);
 
         if (selectedItem == null) {
@@ -487,19 +467,16 @@ public static void createRentalTransaction(Scanner scanner) {
     }
 
     transaction.calculateTotal();
-
     transactions.add(transaction);
     
 FileStorage.saveTransaction(transaction);
-
     transaction.displayTransactionSummary();
 
     System.out.println("\nRental transaction created successfully!");
 }
 
 public static RentalItem findRentalItem(String itemCode) {
-
-    for (RentalItem item : rentalCatalogue) {
+        for (RentalItem item : rentalCatalogue) {
 
         if (item.getItemCode().equalsIgnoreCase(itemCode)) {
             return item;
@@ -510,7 +487,6 @@ public static RentalItem findRentalItem(String itemCode) {
 }
 
 public static Facility findFacility(String facilityId) {
-
     for (Facility facility : facilities) {
 
         if (facility.getFacilityId().equalsIgnoreCase(facilityId)) {
@@ -528,26 +504,23 @@ public static void viewBookings() {
     System.out.println("===== ALL BOOKINGS =====");
 
     if (bookings.isEmpty()) {
-
         System.out.println("No bookings found.");
         return;
     }
 
     for (Booking booking : bookings) {
-
         System.out.println(
                 booking.getBookingDetails()
         );
     }
 }
-    
+
 public static void cancelBooking(Scanner scanner) {
 
     System.out.println();
     System.out.println("===== CANCEL BOOKING =====");
 
     if (bookings.isEmpty()) {
-
         System.out.println("No bookings available.");
         return;
     }
@@ -560,7 +533,6 @@ public static void cancelBooking(Scanner scanner) {
         if (booking.getBookingId().equalsIgnoreCase(bookingId)) {
 
             if (booking.getStatus().equals("CANCELLED")) {
-
                 System.out.println(
                         "This booking has already been cancelled."
                 );
@@ -571,7 +543,6 @@ public static void cancelBooking(Scanner scanner) {
             booking.cancelBooking();
 
             FileStorage.updateSavedBookings(bookings);
-
             System.out.println(
                     "Booking cancelled successfully."
             );
@@ -626,7 +597,6 @@ public static void cancelBooking(Scanner scanner) {
     System.out.printf("%-8s %-28s %-15s %10s%n",
             "Code", "Item Name", "Category", "Price");
     System.out.println("--------------------------------------------------------------");
-
     for (RentalItem item : catalogue) {
         System.out.printf("%-8s %-28s %-15s RM%8.2f%n",
                 item.getItemCode(),
@@ -637,18 +607,17 @@ public static void cancelBooking(Scanner scanner) {
 
     System.out.println("==============================================================");
     System.out.println();
-}
+    }
 
     static void applyPromotion(Scanner scanner) {
 
     System.out.println("\n===== APPLY PROMOTION =====");
-
     if (transactions.isEmpty()) {
         System.out.println("No rental transactions available.");
         pause(scanner);
         return;
     }
-        
+
     System.out.println("\nAvailable Transactions:");
 
     for (RentalTransaction transaction : transactions) {
@@ -663,7 +632,6 @@ public static void cancelBooking(Scanner scanner) {
     String transactionId = scanner.nextLine().trim();
 
     RentalTransaction selectedTransaction = null;
-
     for (RentalTransaction transaction : transactions) {
 
         if (transaction.getTransactionId()
@@ -682,14 +650,13 @@ public static void cancelBooking(Scanner scanner) {
 
     promotionManager.displayEligiblePromotions(
         selectedTransaction
-    ); 
-        
+    );
+
     promotionManager.applyBestPromotion(
         selectedTransaction
     );
 
     selectedTransaction.displayTransactionSummary();
-
     pause(scanner);
 }
 
@@ -704,7 +671,6 @@ static void makePayment(Scanner scanner) {
     }
 
     System.out.println("\nAvailable Transactions:");
-
     for (RentalTransaction transaction : transactions) {
 
         System.out.println(
@@ -721,7 +687,6 @@ static void makePayment(Scanner scanner) {
     String transactionId = scanner.nextLine().trim();
 
     RentalTransaction selectedTransaction = null;
-    
     for (RentalTransaction transaction : transactions) {
 
         if (transaction.getTransactionId()
@@ -744,8 +709,7 @@ String existingPaymentId =
         "P" + String.format("%03d", transactionIndex + 1);
 
 for (Payment existingPayment : payments) {
-
-    if (existingPayment.getPaymentId()
+       if (existingPayment.getPaymentId()
             .equals(existingPaymentId)) {
 
         System.out.println(
@@ -780,14 +744,9 @@ promotionManager.applyBestPromotion(selectedTransaction);
 
     Payment payment = null;
 
-payments.add(payment);
-
-FileStorage.savePayment(payment);
-
+    
     if (methodChoice.equals("1")) {
-
         System.out.print("Enter cash received: RM");
-
         double receivedAmount;
 
         try {
@@ -801,15 +760,13 @@ FileStorage.savePayment(payment);
         }
 
         if (receivedAmount < amount) {
-
-            System.out.println(
+             System.out.println(
                 "Insufficient cash. Payment cancelled."
             );
 
             pause(scanner);
             return;
         }
-
         payment = new CashPayment(
                 paymentId,
                 amount,
@@ -852,7 +809,7 @@ FileStorage.savePayment(payment);
         );
 
         String referenceNumber = scanner.nextLine();
-
+        
         payment = new EWalletPayment(
                 paymentId,
                 amount,
@@ -869,11 +826,10 @@ FileStorage.savePayment(payment);
     }
 
 payments.add(payment);
+FileStorage.savePayment(payment);
 
 System.out.println("\nPayment successful!");
-
 payment.displayPayment();
-
 pause(scanner);
 }
 
@@ -886,8 +842,7 @@ public static void dailyReport() {
             bookings,
             transactions
     );
-
-    report.displayReport();
+       report.displayReport();
 
     System.out.println("\n===== PAYMENT METHOD SUMMARY =====");
 
@@ -898,15 +853,12 @@ public static void dailyReport() {
     for (Payment payment : payments) {
 
         if (payment instanceof CashPayment) {
-
             cashCount++;
 
         } else if (payment instanceof CardPayment) {
-
             cardCount++;
 
         } else if (payment instanceof EWalletPayment) {
-
             eWalletCount++;
         }
     }
@@ -918,7 +870,6 @@ public static void dailyReport() {
 }
 
     public static void pause(Scanner scanner) {
-
         System.out.println();
         System.out.print("Press Enter to return to the main menu...");
         scanner.nextLine();
